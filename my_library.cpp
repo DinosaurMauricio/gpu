@@ -93,6 +93,6 @@ void flush_cache() {
 
 int calculateWork(int size) {
     // Calculate the amount of work done (number of transpositions)
-    int work = size * (size - 1) / 2;
+    int work = size * size;
     return work;
 }

@@ -1,8 +1,27 @@
 #include <iostream>
 #include <math.h>
 #include <time.h>
+#include <sys/time.h>
 
 #include "my_library.h"
+
+
+void printProgressBar(int progress, int total) {
+    const int barWidth = 50;
+    float progressRatio = (float)progress / total;
+    int progressBarLength = progressRatio * barWidth;
+
+    printf("[");
+    for (int i = 0; i < progressBarLength; ++i) {
+        printf("=");
+    }
+    for (int i = progressBarLength; i < barWidth; ++i) {
+        printf(" ");
+    }
+    printf("] %d%%\r", (int)(progressRatio * 100));
+    fflush(stdout); // Flush output to ensure the progress bar is displayed immediately
+}
+
 
 // shw
 int main(int argc, char *argv[])
@@ -41,25 +60,31 @@ int main(int argc, char *argv[])
         clock_t begin = clock();
         
         //__builtin_assume_aligned(matrix,64);
-        transposeMatrix(matrix, size);
+        //transposeMatrix(matrix, size);
         clock_t end = clock();
 
         double elapsed_temp = double(end - begin) / CLOCKS_PER_SEC;
         //printf("Time measured: %f \n", elapsed_temp);
+        printProgressBar(i + 1, N);
         elapsed[i] = elapsed_temp;
         total_elapsed += elapsed_temp;
     }
     
+    printf("\n");
     double average_time = total_elapsed / N;
     printf("Average time: %f\n", average_time);
     
-    // To GB/s
-    double effective_bandwidth = (calculateWork(size) * sizeof(DATA_TYPE))/ (average_time* pow(10, 9));
+    // bytes/second
+    double effective_bandwidth = (calculateWork(size) * sizeof(DATA_TYPE))/ (average_time);
 
-    printf("Effective bandwidth: %f\n", effective_bandwidth);
+    int gb_size = 1073741824;
+    double effectve_bandwidth_gb_per_second = effective_bandwidth/gb_size;
+
+    printf("Effective bandwidth gb/sec: %f\n", effectve_bandwidth_gb_per_second);
 
     message = "Transpose \n";
     printMatrix(matrix,size, message);
 
     freeMemory(matrix, size);
 }
+
