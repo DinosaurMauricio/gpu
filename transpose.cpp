@@ -1,27 +1,8 @@
 #include <iostream>
 #include <math.h>
 #include <time.h>
-#include <sys/time.h>
 
 #include "my_library.h"
-
-
-void printProgressBar(int progress, int total) {
-    const int barWidth = 50;
-    float progressRatio = (float)progress / total;
-    int progressBarLength = progressRatio * barWidth;
-
-    printf("[");
-    for (int i = 0; i < progressBarLength; ++i) {
-        printf("=");
-    }
-    for (int i = progressBarLength; i < barWidth; ++i) {
-        printf(" ");
-    }
-    printf("] %d%%\r", (int)(progressRatio * 100));
-    fflush(stdout); // Flush output to ensure the progress bar is displayed immediately
-}
-
 
 // shw
 int main(int argc, char *argv[])
@@ -29,6 +10,8 @@ int main(int argc, char *argv[])
 
 
     int matrixSize = -1;
+    int numberOfTests = -1;
+    int blockSize = -1;
 
     if (argc < 2)
     {
@@ -38,10 +21,25 @@ int main(int argc, char *argv[])
     else
     {
         matrixSize = atoi(argv[1]);
+        numberOfTests = atoi(argv[2]);
+        if (argc >= 4) 
+        {
+            blockSize = atoi(argv[3]);
+        }
     }
     int size = pow(2, matrixSize);
 
     printf("The size of the matrix is %dx%d \n",size,size );
+
+    if(blockSize == -1)
+    {
+        printf("No block size was provided. Will work with full matrix \n");
+    }
+
+    if (size % blockSize != 0) {
+        printf("Block size must be a multiple of the matrix size.\n");
+        exit(1);
+    }
 
     DATA_TYPE **matrix = createMatrix(size);
 
@@ -50,37 +48,45 @@ int main(int argc, char *argv[])
     const char* message = "Original \n";
     printMatrix(matrix,size, message);
 
-    long long N = 1<<10; // number of tries
+    long long N = numberOfTests; // number of tries
     double total_elapsed = 0.0;
     int* elapsed = (int*)malloc(N*sizeof(int));
 
+    printf("Effective bandwidth (gbps) / Elapsed Time: \n");
     for (int i=0; i< N ; ++i)
     {
         flush_cache();
         clock_t begin = clock();
         
-        //__builtin_assume_aligned(matrix,64);
-        //transposeMatrix(matrix, size);
+        __builtin_assume_aligned(matrix,64);
+
+        if(blockSize == -1)
+        {
+            transposeMatrix(matrix, size);
+        }
+        else 
+        {
+            transposeMatrix(matrix, size, blockSize);
+        }
         clock_t end = clock();
 
         double elapsed_temp = double(end - begin) / CLOCKS_PER_SEC;
-        //printf("Time measured: %f \n", elapsed_temp);
-        printProgressBar(i + 1, N);
+
         elapsed[i] = elapsed_temp;
+
+        printf("%f, %f\n", calculate_effective_bandwidth(size, elapsed_temp), elapsed_temp);
+
         total_elapsed += elapsed_temp;
     }
     
     printf("\n");
-    double average_time = total_elapsed / N;
+
+    double average_time = total_elapsed/N;
+    // we calculate the average effective bandwidth
+    double effective_bandwidth = calculate_effective_bandwidth(size, average_time);
+
+    printf("Average Effective bandwidth gb/sec: %f\n", effective_bandwidth);
     printf("Average time: %f\n", average_time);
-    
-    // bytes/second
-    double effective_bandwidth = (calculateWork(size) * sizeof(DATA_TYPE))/ (average_time);
-
-    int gb_size = 1073741824;
-    double effectve_bandwidth_gb_per_second = effective_bandwidth/gb_size;
-
-    printf("Effective bandwidth gb/sec: %f\n", effectve_bandwidth_gb_per_second);
 
     message = "Transpose \n";
     printMatrix(matrix,size, message);

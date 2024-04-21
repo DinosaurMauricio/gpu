@@ -14,5 +14,5 @@ void transposeMatrix(DATA_TYPE **matrix, int size);
 void transposeMatrix(DATA_TYPE **matrix, int size, int blockSize);
 void freeMemory(DATA_TYPE **matrix, int size);
 DATA_TYPE** createMatrix(int size);
-int calculateWork(int size);
+double calculate_effective_bandwidth(int size, double time);
 

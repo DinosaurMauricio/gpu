@@ -32,7 +32,7 @@ ifndef BANDWIDTH_PERFORMANCE
 $(info BANDWIDTH_PERFORMANCE was not set setting to default -O0. Options are -O0 -O1 -O2 -O3. See https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html for more info. )
 	BANDWIDTH_PERFORMANCE=O0
 else
-$(info BANDWIDTH_PERFORMANCE is $(DATA_TYPE))
+$(info BANDWIDTH_PERFORMANCE is $(BANDWIDTH_PERFORMANCE))
 endif
 
 
