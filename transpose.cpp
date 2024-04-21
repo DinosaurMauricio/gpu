@@ -35,6 +35,10 @@ int main(int argc, char *argv[])
     {
         printf("No block size was provided. Will work with full matrix \n");
     }
+    else 
+    {
+        printf("Block size is %d \n", blockSize);
+    }
 
     if (size % blockSize != 0) {
         printf("Block size must be a multiple of the matrix size.\n");

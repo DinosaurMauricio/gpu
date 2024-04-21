@@ -11,4 +11,8 @@
 
 
 
-srun ./bin/gpu_transpose $1 $2 $3
+if [[ "$4" == "--valgrind" ]]; then
+    srun valgrind --tool=cachegrind ./bin/gpu_transpose "$1" "$2" "$3"
+else
+    srun ./bin/gpu_transpose "$1" "$2" "$3"
+fi
