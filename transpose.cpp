@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 
 #include "my_library.h"
 
@@ -15,8 +16,9 @@ int main(int argc, char *argv[])
 
     if (argc < 2)
     {
-        printf("No matrix size was provided. Defaulting to 1. \n");
+        printf("No matrix size or number of tries was provided. Defaulting to 1. \n");
         matrixSize = 1;
+        numberOfTests = 1;
     }
     else
     {
@@ -24,7 +26,10 @@ int main(int argc, char *argv[])
         numberOfTests = atoi(argv[2]);
         if (argc >= 4) 
         {
-            blockSize = atoi(argv[3]);
+            if (strcmp(argv[argc - 1], "--valgrind") != 0)
+            {
+                blockSize = atoi(argv[3]);
+            }
         }
     }
     int size = pow(2, matrixSize);
@@ -76,7 +81,7 @@ int main(int argc, char *argv[])
 
         printf("%f, %f\n", calculate_effective_bandwidth(size, elapsed_temp), elapsed_temp);
 
-        total_elapsed +=  elapsed_temp;
+        total_elapsed += elapsed_temp;
     }
     
     printf("\n");
