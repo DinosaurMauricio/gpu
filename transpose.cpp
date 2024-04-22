@@ -52,12 +52,10 @@ int main(int argc, char *argv[])
     const char* message = "Original \n";
     printMatrix(matrix,size, message);
 
-    long long N = numberOfTests; // number of tries
     double total_elapsed = 0.0;
-    int* elapsed = (int*)malloc(N*sizeof(int));
 
     printf("Effective bandwidth (gbps) / Elapsed Time: \n");
-    for (int i=0; i< N ; ++i)
+    for (int i=0; i< numberOfTests ; ++i)
     {
         flush_cache();
         clock_t begin = clock();
@@ -76,16 +74,14 @@ int main(int argc, char *argv[])
 
         double elapsed_temp = double(end - begin) / CLOCKS_PER_SEC;
 
-        elapsed[i] = elapsed_temp;
-
         printf("%f, %f\n", calculate_effective_bandwidth(size, elapsed_temp), elapsed_temp);
 
-        total_elapsed += elapsed_temp;
+        total_elapsed +=  elapsed_temp;
     }
     
     printf("\n");
 
-    double average_time = total_elapsed/N;
+    double average_time = total_elapsed/numberOfTests;
     // we calculate the average effective bandwidth
     double effective_bandwidth = calculate_effective_bandwidth(size, average_time);
 
