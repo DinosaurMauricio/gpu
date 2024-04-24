@@ -85,6 +85,7 @@ void transposeMatrix(DATA_TYPE **matrix, int size, int blockSize)
                 {
                         // Perform transpose only for upper triangle
                         if (l > k) { 
+                            __builtin_prefetch(&matrix[l][k], 0, 1);
                             temp = matrix[k][l];
                             matrix[k][l] = matrix[l][k];
                             matrix[l][k] = temp;
