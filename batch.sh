@@ -6,8 +6,8 @@
 #SBATCH --cpus-per-task=1
 #SBATCH --time=00:05:00
 #SBATCH --job-name=test
-#SBATCH --output=double-test-%j.out
-#SBATCH --error=double-test-%j.err
+#SBATCH --output=test-%j.out
+#SBATCH --error=test-%j.err
 
 if [ "$#" -eq 2 ]; then
     srun ./bin/gpu_transpose "$1" "$2"
