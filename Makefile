@@ -17,20 +17,19 @@ all: $(TARGETDIR)/gpu_transpose
 #debug: all
 
 ifndef DATA_TYPE
-	DATA_TYPE=int
+DATA_TYPE=int
 else
 $(info DATA_TYPE is $(DATA_TYPE))
 endif
 
 ifeq ($(DATA_TYPE),int)
-	FORMAT_SPECIFIER = %d
+FORMAT_SPECIFIER = %d
 else
-	FORMAT_SPECIFIER = %f
+FORMAT_SPECIFIER = %f
 endif
 
 ifndef BANDWIDTH_PERFORMANCE
-$(info BANDWIDTH_PERFORMANCE was not set setting to default -O0. Options are -O0 -O1 -O2 -O3. See https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html for more info. )
-	BANDWIDTH_PERFORMANCE=O0
+BANDWIDTH_PERFORMANCE=O0
 else
 $(info BANDWIDTH_PERFORMANCE is $(BANDWIDTH_PERFORMANCE))
 endif
