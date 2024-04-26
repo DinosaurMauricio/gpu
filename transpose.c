@@ -5,7 +5,6 @@
 
 #include "my_library.h"
 
-// shw
 int main(int argc, char *argv[])
 {
 

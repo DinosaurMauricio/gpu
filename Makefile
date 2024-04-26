@@ -5,7 +5,7 @@ INCLUDE =  -Isrc
 # march=native -ftree-vectorize is to vectorize the for loop instead of a normal scalar, it improves the performance, this is for gcc, for intel is other option
 OPT = -std=c++14 -march=native -ftree-vectorize -g
 
-MAIN = transpose.cpp
+MAIN = transpose.c
 
 BUILDDIR	:= obj
 TARGETDIR	:= bin
@@ -42,9 +42,9 @@ $(TARGETDIR)/gpu_transpose: ${MAIN} $(OBJECTS)
 	mkdir -p $(@D)
 	$(CC) $^ -DDATA_TYPE=$(DATA_TYPE) -DFORMAT_SPECIFIER='"$(FORMAT_SPECIFIER)"' -o $@ $(INCLUDE) $(LIBS) $(OPT) -$(BANDWIDTH_PERFORMANCE)
 
-$(BUILDDIR)/my_library.o: my_library.cpp
+$(BUILDDIR)/my_library.o: my_library.c
 	mkdir -p $(BUILDDIR) $(TARGETDIR)
-	$(CC) -c -DDATA_TYPE=$(DATA_TYPE) -DFORMAT_SPECIFIER='"$(FORMAT_SPECIFIER)"' -o $@ $(LIBS) $(INCLUDE) my_library.cpp $(OPT) -$(BANDWIDTH_PERFORMANCE)
+	$(CC) -c -DDATA_TYPE=$(DATA_TYPE) -DFORMAT_SPECIFIER='"$(FORMAT_SPECIFIER)"' -o $@ $(LIBS) $(INCLUDE) my_library.c $(OPT) -$(BANDWIDTH_PERFORMANCE)
 
 clean:
 	rm $(BUILDDIR)/*.o $(TARGETDIR)/*

@@ -1,6 +1,5 @@
 #include <iostream>
 #include <math.h>
-using namespace std;
 
 #include "my_library.h"
 
