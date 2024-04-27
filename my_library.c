@@ -1,4 +1,5 @@
-#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 
 #include "my_library.h"
@@ -71,7 +72,7 @@ void transposeMatrix(DATA_TYPE **matrix, int size)
     }
 }
 
-void transposeMatrix(DATA_TYPE **matrix, int size, int blockSize)
+void transposeMatrixBlocks(DATA_TYPE **matrix, int size, int blockSize)
 {
     DATA_TYPE temp;
     for (int i = 0; i < size; i += blockSize)

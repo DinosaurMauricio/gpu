@@ -1,4 +1,4 @@
-#include <iostream>
+#include <stdio.h>
 #include <math.h>
 #include <time.h>
 #include <string.h>
@@ -70,11 +70,11 @@ int main(int argc, char *argv[])
         }
         else 
         {
-            transposeMatrix(matrix, size, blockSize);
+            transposeMatrixBlocks(matrix, size, blockSize);
         }
         clock_t end = clock();
 
-        double elapsed_temp = double(end - begin) / CLOCKS_PER_SEC;
+        double elapsed_temp = (double)(end - begin) / CLOCKS_PER_SEC;
 
         printf("%f, %f\n", calculate_effective_bandwidth(size, elapsed_temp), elapsed_temp);
 
