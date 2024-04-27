@@ -84,6 +84,8 @@ void transposeMatrix(DATA_TYPE **matrix, int size, int blockSize)
                 {
                         // Perform transpose only for upper triangle
                         if (l > k) { 
+                            // A value of 0 indicates that the data will only be read
+                            // Value of 1 indicates that the data has temporal locality (it will likely be accessed again soon)
                             __builtin_prefetch(&matrix[l][k], 0, 1);
                             temp = matrix[k][l];
                             matrix[k][l] = matrix[l][k];
@@ -120,7 +122,7 @@ void flush_cache() {
 }
 
 int calculateWork(int size) {
-    // Calculate the amount of work done (number of transpositions)
+    // Calculate the amount of work done
     int work = size * size;
     return work;
 }

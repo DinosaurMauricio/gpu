@@ -7,8 +7,6 @@
 
 int main(int argc, char *argv[])
 {
-
-
     int matrixSize = -1;
     int numberOfTests = -1;
     int blockSize = -1;
